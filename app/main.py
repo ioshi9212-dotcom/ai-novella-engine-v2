@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI
@@ -8,7 +7,12 @@ from pydantic import BaseModel
 
 from app.core.storage import ensure_runtime_storage, get_storage_paths, read_state, storage_debug_info
 
-app = FastAPI(title="ai-novella-engine-v2")
+PUBLIC_BASE_URL = "https://ai-novella-engine-v2-production.up.railway.app"
+
+app = FastAPI(
+    title="ai-novella-engine-v2",
+    servers=[{"url": PUBLIC_BASE_URL}],
+)
 
 BASE_CONTEXT_FILES = [
     "data/canon/novella_goal.md",
@@ -76,7 +80,7 @@ def read_all_state() -> dict[str, Any]:
     return result
 
 
-@app.post("/api/v1/turn/context")
+@app.post("/api/v1/turn/context", operation_id="getTurnContext")
 def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
     state = read_all_state()
     current_state = state.get("current_state.json", {})
@@ -104,4 +108,80 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
         "state": state,
         "file_contents": file_contents,
         "next_step": "Use this returned context to write the next scene in ChatGPT.",
+    }
+
+
+@app.get("/actions/openapi.json", include_in_schema=False)
+def actions_openapi() -> dict[str, Any]:
+    return {
+        "openapi": "3.1.0",
+        "info": {
+            "title": "AI Novella Engine V2 Actions",
+            "version": "1.0.0",
+        },
+        "servers": [{"url": PUBLIC_BASE_URL}],
+        "paths": {
+            "/api/v1/turn/context": {
+                "post": {
+                    "operationId": "getTurnContext",
+                    "summary": "Get novella context for the next player turn",
+                    "description": "Returns context for the Custom GPT. This server does not call OpenAI.",
+                    "requestBody": {
+                        "required": True,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": ["player_input"],
+                                    "properties": {
+                                        "player_input": {
+                                            "type": "string",
+                                            "description": "The player's latest action or dialogue."
+                                        },
+                                        "include_file_contents": {
+                                            "type": "boolean",
+                                            "default": True
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "200": {
+                            "description": "Context bundle for Custom GPT",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "status": {"type": "string"},
+                                            "mode": {"type": "string"},
+                                            "player_input": {"type": "string"},
+                                            "required_files": {
+                                                "type": "array",
+                                                "items": {"type": "string"}
+                                            },
+                                            "missing_files": {
+                                                "type": "array",
+                                                "items": {"type": "string"}
+                                            },
+                                            "state": {
+                                                "type": "object",
+                                                "additionalProperties": True
+                                            },
+                                            "file_contents": {
+                                                "type": "object",
+                                                "additionalProperties": {"type": "string"}
+                                            },
+                                            "next_step": {"type": "string"}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
