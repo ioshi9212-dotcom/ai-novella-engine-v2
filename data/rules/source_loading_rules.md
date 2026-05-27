@@ -15,12 +15,17 @@
 Перед любым сценическим ответом нужны:
 
 ```text
+data/canon/novella_goal.md
 data/gpt/engine_prompt.md
 data/gpt/scene_format.md
 data/rules/source_loading_rules.md
 data/rules/knowledge_rules.md
 data/rules/player_control_rules.md
+data/rules/relationship_state_rules.md
+data/rules/character_rotation_rules.md
+data/rules/npc_creation_rules.md
 data/canon/canon_index.md
+data/calendar/character_availability.json
 data/state/current_state.json
 data/state/knowledge_state.json
 data/state/relationships.json
@@ -117,14 +122,6 @@ data/characters/character_id_index.json
 
 ---
 
-## Observing characters
-
-Наблюдающий персонаж не обязан говорить.
-
-Но если его присутствие меняет напряжение сцены, субординацию, безопасность, доступ к информации или реакцию других — карточка нужна.
-
----
-
 ## Scene files
 
 Если `current_scene_id` есть, подтянуть:
@@ -167,8 +164,6 @@ data/canon/canon_index.md
 ---
 
 ## Canon files by location
-
-Локационные canon-файлы читаются только при сценах в этой локации.
 
 ### Восточная база
 
@@ -312,14 +307,6 @@ anchor_freeplay_after_start_scene
 data/rules/start_scene_continuation_rules.md
 ```
 
-Этот файл нужен, чтобы:
-
-- не повторять стартовый текст после первого хода;
-- не буксовать до 03:02;
-- правильно вести Ирэя, Эмму, Джуна и условное появление Райдена;
-- не путать энергию Эммы с Эхо;
-- не делать Ирэя знатоком амнезии заранее.
-
 ### Timeline / Echo event rules
 
 Если `scene_tags` содержит:
@@ -337,12 +324,47 @@ echo_before_first_raid
 data/rules/timeline_event_rules.md
 ```
 
-Этот файл нужен, чтобы:
+---
 
-- не вводить активные Эхо до первого рейда;
-- не запрещать обычную энергию персонажей;
-- не путать Эхо с энергией;
-- держать первое появление Эхо как событие 1206-09-15.
+## Rule files by role / calendar
+
+### Medical scene
+
+Если сцена происходит в медблоке, содержит осмотр, травму, потерю сознания, восстановление, медицинский протокол или нужен именной медик, добавить:
+
+```text
+data/calendar/character_availability.json
+data/rules/npc_creation_rules.md
+data/characters/main/yuna.json
+data/characters/main/yuna_history.json
+```
+
+Главное правило: если Юна доступна, не создавать случайного врача вместо неё.
+
+### Echo / energy specialist after contact
+
+Если после контакта Акиры с Эхо или его последствий нужен специалист по кайросам, энергии, гибридам, аномальной реакции Эхо или диагностике энергетических несостыковок, добавить:
+
+```text
+data/calendar/character_availability.json
+data/characters/main/natsu.json
+data/characters/main/natsu_history.json
+```
+
+Главное правило: Нацу не появляется до первого контакта Акиры с Эхо или его последствий.
+
+### Character rotation / NPC creation
+
+Если сцена требует нового NPC или служебную роль, сначала проверить:
+
+```text
+data/rules/character_rotation_rules.md
+data/rules/npc_creation_rules.md
+data/calendar/character_availability.json
+data/characters/character_id_index.json
+```
+
+Новый NPC допустим только если нет канонного или уже закреплённого персонажа для этой роли.
 
 ---
 
@@ -401,7 +423,9 @@ data/canon/energy_system.md
 - будущие события как текущую правду;
 - старые scene-файлы, если `current_state` уже ушёл дальше;
 - rules/locks, не относящиеся к сцене;
-- NPC registry как замену карточке конкретного NPC.
+- NPC registry как замену карточке конкретного NPC;
+- случайного врача вместо Юны, если Юна доступна;
+- случайного специалиста по кайросам/энергии вместо Нацу после события Эхо.
 
 Нельзя превращать hidden-lore в реплику NPC.
 
@@ -443,3 +467,6 @@ data/canon/energy_system.md
 13. Если подтянут `akira_raiden_connection.md`, не сводит ли ИИ Акиру и Райдена насильно и не обесценивает ли выбор игрока.
 14. Если сцена до 1206-09-15, не введены ли активные Эхо раньше first_raid_echo.
 15. Если сцена продолжает start_scene, двигается ли она к 03:02 вместо пустого стояния на месте.
+16. Если нужен медик, проверена ли Юна перед созданием нового врача.
+17. Если нужен специалист после Эхо, проверен ли Нацу перед созданием нового специалиста.
+18. Если появился новый NPC, есть ли причина, почему не подошёл уже существующий персонаж.
