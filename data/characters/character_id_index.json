@@ -10,5 +10,7 @@
   "hana": "data/characters/main/hana.json",
   "miki": "data/characters/main/miki.json",
   "alex": "data/characters/main/alex.json",
-  "shiro": "data/characters/main/shiro.json"
+  "shiro": "data/characters/main/shiro.json",
+  "liana": "data/characters/main/liana.json",
+  "kai": "data/characters/main/kai.json"
 }
