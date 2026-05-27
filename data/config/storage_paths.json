@@ -1,0 +1,43 @@
+{
+  "purpose": "Storage path configuration for ai-novella-engine-v2. Canon files stay in the repository. Runtime state, sessions, logs and backups must live on Railway Volume when deployed.",
+  "environment_variables": {
+    "railway_volume_mount_path": "RAILWAY_VOLUME_MOUNT_PATH",
+    "custom_runtime_data_root": "NOVELLA_RUNTIME_DATA_ROOT"
+  },
+  "path_resolution_priority": [
+    "NOVELLA_RUNTIME_DATA_ROOT",
+    "RAILWAY_VOLUME_MOUNT_PATH",
+    "./runtime_data"
+  ],
+  "repository_roots": {
+    "canon_root": "./data/canon",
+    "rules_root": "./data/rules",
+    "characters_root": "./data/characters",
+    "scenes_root": "./data/scenes",
+    "state_templates_root": "./data/state"
+  },
+  "runtime_roots": {
+    "runtime_root": "{RUNTIME_DATA_ROOT}",
+    "sessions_root": "{RUNTIME_DATA_ROOT}/sessions",
+    "state_root": "{RUNTIME_DATA_ROOT}/state",
+    "backups_root": "{RUNTIME_DATA_ROOT}/backups",
+    "logs_root": "{RUNTIME_DATA_ROOT}/logs",
+    "exports_root": "{RUNTIME_DATA_ROOT}/exports",
+    "tmp_root": "{RUNTIME_DATA_ROOT}/tmp"
+  },
+  "runtime_state_files": {
+    "current_state": "{RUNTIME_DATA_ROOT}/state/current_state.json",
+    "knowledge_state": "{RUNTIME_DATA_ROOT}/state/knowledge_state.json",
+    "relationships": "{RUNTIME_DATA_ROOT}/state/relationships.json",
+    "inventory_state": "{RUNTIME_DATA_ROOT}/state/inventory_state.json",
+    "scene_history": "{RUNTIME_DATA_ROOT}/state/scene_history.json"
+  },
+  "initialization_rules": [
+    "At runtime, resolve RUNTIME_DATA_ROOT using NOVELLA_RUNTIME_DATA_ROOT first, then RAILWAY_VOLUME_MOUNT_PATH, then ./runtime_data for local development.",
+    "Create runtime directories if missing.",
+    "Copy missing state template files from ./data/state into runtime state root on first start only.",
+    "Never overwrite runtime state files with repository templates after they already exist.",
+    "Never write active session state back into ./data/state in production.",
+    "Canon, rules, characters and scenes are read from repository files; runtime state is read/written from runtime_root."
+  ]
+}
