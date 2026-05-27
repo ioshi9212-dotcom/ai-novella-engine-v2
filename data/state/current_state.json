@@ -1,0 +1,13 @@
+{
+  "current_scene_id": null,
+  "current_date": null,
+  "time_of_day": null,
+  "location_id": null,
+  "active_characters": ["akira"],
+  "nearby_characters": [],
+  "scene_participants": [],
+  "last_scene_anchor": "",
+  "last_player_input": "",
+  "turn_number": 0,
+  "notes": []
+}
