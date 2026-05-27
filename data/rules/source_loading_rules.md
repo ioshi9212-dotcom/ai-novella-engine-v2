@@ -270,6 +270,28 @@ data/canon/kairos_public_and_hidden.md
 
 Главное правило: Акира никогда не была на материке кайросов. Материк кайросов не является её домом. Ирэй, Эмма и Самуэль не должны трактоваться как персонажи, которые хотят “вернуть её к своим”.
 
+### Akira and Raiden connection
+
+Если `scene_tags` содержит:
+
+```text
+akira_raiden_connection
+relationship_tension
+romance_tension
+raiden_jealousy
+raiden_protection
+raiden_memory_tension
+reincarnation_cycle
+```
+
+или в сцене есть Акира и Райден вместе, их напряжение, защита, ревность, странная синхронизация, выбор между Райденом и другим персонажем, добавить:
+
+```text
+data/canon/relationships/akira_raiden_connection.md
+```
+
+Важно: файл связи не заставляет игрока выбирать Райдена. Он нужен для естественной реакции Райдена, Акиры и окружающих.
+
 ---
 
 ## Canon files by active/nearby characters
@@ -286,6 +308,19 @@ samuel
 
 ```text
 data/canon/kairos_public_and_hidden.md
+```
+
+Если в сцене есть одновременно:
+
+```text
+akira
+raiden
+```
+
+и сцена содержит эмоциональное напряжение, защиту, ревность, личный конфликт, странную реакцию или намёк на прошлую связь, добавить:
+
+```text
+data/canon/relationships/akira_raiden_connection.md
 ```
 
 Если в сцене есть Эхо или странная реакция Эхо на Акиру, добавить:
@@ -310,6 +345,7 @@ data/canon/energy_system.md
 - карточки всех персонажей сразу;
 - все canon-файлы сразу;
 - hidden lore без явной причины;
+- future/hidden relationship lore без сцены, где это реально нужно;
 - будущие события как текущую правду;
 - старые scene-файлы, если `current_state` уже ушёл дальше;
 - rules/locks, не относящиеся к сцене;
@@ -352,3 +388,4 @@ data/canon/energy_system.md
 10. Подтянут ли `energy_system.md`, если в сцене есть энергия.
 11. Подтянут ли `kairos_public_and_hidden.md`, если в сцене есть кайросы, Ирэй, Эмма или Самуэль.
 12. Не сделан ли ложный вывод, что Акиру хотят вернуть на материк кайросов.
+13. Если подтянут `akira_raiden_connection.md`, не сводит ли ИИ Акиру и Райдена насильно и не обесценивает ли выбор игрока.
