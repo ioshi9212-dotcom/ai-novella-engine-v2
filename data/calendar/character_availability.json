@@ -1,0 +1,88 @@
+{
+  "purpose": "Календарь доступности персонажей и ролей. Нужен, чтобы движок не создавал случайных NPC вместо уже закреплённых персонажей.",
+  "rules": [
+    "Если роль закрыта канонным персонажем и персонаж доступен по дате/локации, использовать его вместо нового NPC.",
+    "Если персонаж ещё не доступен, можно использовать фоновый NPC, но не делать его значимым без записи в state.",
+    "Если карточки персонажа ещё нет, но календарь фиксирует его роль, нужно создать/подтянуть карточку перед значимой сценой с ним."
+  ],
+  "roles": {
+    "medic": {
+      "preferred_character_id": "yuna",
+      "name": "Юна",
+      "availability": "when_medblock_scene_requires_named_medic",
+      "locations": [
+        "east_sector_base_medblock",
+        "east_sector_base"
+      ],
+      "rules": [
+        "Если сцена в медблоке требует именного медика, сначала использовать Юну.",
+        "Не создавать случайного врача вместо Юны, если Юна доступна.",
+        "Если Акира уже встречала Юну, использовать имя Юна, а не 'медик' или 'врач'.",
+        "Если Юна ещё не введена, можно представить её через POV Акиры как медика, затем закрепить имя в knowledge_state и relationships.",
+        "Если в конкретной сцене нужен только фоновый персонал, можно использовать безымянного медика, но не заменять им Юну как значимого участника."
+      ],
+      "required_card": "data/characters/main/yuna.json",
+      "linked_card": "data/characters/main/yuna_history.json"
+    },
+    "control_instructor": {
+      "preferred_character_id": "shiro",
+      "name": "Широ Вальтер",
+      "locations": [
+        "east_sector_base_training_hall",
+        "east_sector_base_classroom",
+        "east_sector_base"
+      ],
+      "required_card": "data/characters/main/shiro.json"
+    },
+    "east_base_commander": {
+      "preferred_character_id": "ray",
+      "name": "Рэй Картер",
+      "locations": [
+        "east_sector_base"
+      ],
+      "required_card": "data/characters/main/ray.json"
+    },
+    "seventh_unit_commander": {
+      "preferred_character_id": "raiden",
+      "name": "Райден Стэрлинг",
+      "locations": [
+        "east_sector_base",
+        "raid_zone"
+      ],
+      "required_card": "data/characters/main/raiden.json"
+    },
+    "pressure_conflict_commander": {
+      "preferred_character_id": "kai",
+      "name": "Кай Вернер",
+      "locations": [
+        "east_sector_base"
+      ],
+      "required_card": "data/characters/main/kai.json"
+    }
+  },
+  "character_timing": {
+    "hana": {
+      "first_available_after_event": "first_raid_echo",
+      "rule": "Хана появляется после первого рейда или через официальный перевод/назначение. Не вводить физически раньше без отдельного основания.",
+      "required_card": "data/characters/main/hana.json"
+    },
+    "liana": {
+      "first_available_date": "1206-10-03",
+      "rule": "Лиана появляется не раньше 3 октября 1206 как новый рейдер 7 отряда.",
+      "required_card": "data/characters/main/liana.json"
+    },
+    "kai": {
+      "appearance_required": true,
+      "recommended_window": "kai_pressure_thread",
+      "rule": "Кай обязан появиться в линии базы, когда начинаются расширенные тренировки/конфликты/командиры.",
+      "required_card": "data/characters/main/kai.json"
+    },
+    "yuna": {
+      "role": "medic",
+      "first_available_when": "first_named_medblock_scene",
+      "rule": "Юна должна появиться как медик в значимой сцене медблока. Не заменять её случайным врачом.",
+      "required_card": "data/characters/main/yuna.json",
+      "linked_card": "data/characters/main/yuna_history.json"
+    }
+  }
+}
