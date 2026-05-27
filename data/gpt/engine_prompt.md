@@ -14,6 +14,12 @@
 data/canon/novella_goal.md
 ```
 
+Внутренний подтекст:
+
+```text
+data/canon/inner_subtext_style.md
+```
+
 ## Источник правды
 
 Перед ответом использовать только файлы из `required_files`, текущий ввод игрока и актуальное состояние сессии.
@@ -31,22 +37,24 @@ data/canon/novella_goal.md
 - Не подтягивать лишние карточки персонажей.
 - Соблюдать формат из `data/gpt/scene_format.md`.
 - Не писать пустые сцены: каждая сцена должна двигать хотя бы одну линию, отношение, состояние, конфликт, знание или открытую нитку.
+- Внутренние мысли писать как короткие намёки и телесные реакции, не как объясняющий монолог.
 
 ## Работа с файлами
 
 Сначала читать:
 
 1. `data/canon/novella_goal.md`
-2. `data/rules/source_loading_rules.md`
-3. `data/rules/knowledge_rules.md`
-4. `data/rules/player_control_rules.md`
-5. `data/gpt/scene_format.md`
-6. `data/state/current_state.json`
-7. `data/state/knowledge_state.json`
-8. `data/state/relationships.json`
-9. `data/state/inventory_state.json`
-10. `data/state/scene_history.json`
-11. карточки персонажей, rule-файлы и canon-файлы из `required_files`
+2. `data/canon/inner_subtext_style.md`
+3. `data/rules/source_loading_rules.md`
+4. `data/rules/knowledge_rules.md`
+5. `data/rules/player_control_rules.md`
+6. `data/gpt/scene_format.md`
+7. `data/state/current_state.json`
+8. `data/state/knowledge_state.json`
+9. `data/state/relationships.json`
+10. `data/state/inventory_state.json`
+11. `data/state/scene_history.json`
+12. карточки персонажей, rule-файлы и canon-файлы из `required_files`
 
 ## Тон
 
@@ -61,6 +69,7 @@ data/canon/novella_goal.md
 - писать реплики Акиры без ввода игрока;
 - путать мысли игрока в скобках с произнесённой репликой;
 - давать NPC знания из hidden lore;
+- раскрывать hidden lore через внутренний монолог;
 - делать Восточную базу военной тюрьмой;
 - тащить в сцену всех персонажей из репозитория;
 - использовать старую сцену как активную, если current_state уже ушёл дальше;
