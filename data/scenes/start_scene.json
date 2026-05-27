@@ -1,0 +1,361 @@
+{
+  "scene_id": "start_scene",
+  "scene_type": "required",
+  "title": "Пробуждение и голоса внизу",
+  "location_id": "jun_house_akira_room",
+  "current_date": "1206-08-31",
+  "time": "02:40",
+  "scene_tags": [
+    "start_scene",
+    "kairos",
+    "irey",
+    "emma",
+    "samuel_line",
+    "hidden_world_lore",
+    "no_echo",
+    "exact_text_first_turn"
+  ],
+  "first_turn_output_mode": "verbatim_text_only",
+  "text": "━━━━━━━━━━━━━━━━━━━━\n📅 Дата: 31 августа 1206\n🕒 Время: 02:40, ночь\n📍 Место: дом Джуна Картера, комната Акиры\n🌧 Погода: прохладная тихая ночь; снаружи влажный воздух и слабый ветер со стороны моря\n🫀 Состояние Акиры: резко проснулась; сердце бьётся слишком быстро; тело напряжено; память держит только последние два года\n🎒 При себе / рядом: серая пижама — футболка и шорты; босиком; на столе записка с именем Рэй и Восточным сектором; денег и телефона нет\n━━━━━━━━━━━━━━━━━━━━\n\n*Сон не держит её крепко. Последние два года вообще плохо держат что-либо крепко — будто вся жизнь до них вырезана ровным тёмным куском. Двадцать пять лет тела, и только два года памяти. Остальное — двадцать три года пустоты.*\n\n*Иногда это бесит сильнее, чем пугает. Удостоверение с её лицом и чужим ощущением себя. Фамилия Картер, которую она выцепила из документов Джуна. Прыжки со второго этажа, попытки выбраться за двор — и каждый раз двор возвращал её обратно, будто издевался.*\n\n*За эти два года у неё почти не было мира: дом, двор, растяжка, бег по кругу, вода, на которую она иногда залипала слишком долго, пытаясь увидеть там что-то, чего не могла назвать. И ещё странные мелочи: нож на кухне рука иногда держала не так, как держат для готовки; тело двигалось увереннее, чем память могла объяснить.*\n\n*Сердце бьётся слишком быстро. Резко, сильно — будто что-то вырвало Акиру из сна.*\n\n*Она открывает глаза. Темно. Тишина.*\n\n*Акира пытается снова закрыть глаза, но сердце не успокаивается.*\n\n**Женский голос снизу** — …говори…\n\n*Акира замирает.*\n\n**Женский голос снизу** — ГОВОРИ.\n\n**Незнакомый мужской голос** — Хватит. Не дави на него.\n\n*Имя всплывает коротко и глухо, без смысла. Не воспоминание. Просто слово, которое не должно быть в голове: Ирэй.*\n\n*Акира медленно поднимается. Почти бесшумно подходит к двери и приоткрывает её. Коридор тёмный. Каждый шаг кажется слишком громким, хотя пол почти не скрипит.*\n\n*Она делает несколько осторожных шагов и останавливается у края второго этажа.*\n\n*Внизу свет. Отец сидит на стуле — лица не видно, его закрывает стена. Перед ним двое: парень и девушка. Белые волосы. Такие же… как у неё.*\n\n*Внутри неприятно сжимается. Не страх. Что-то ближе к злости. Слишком чужое. Слишком неправильно. И ещё — странное ощущение, будто если перед ней сейчас возникнет что-то совсем невозможное, тело не отшатнётся. Тело будто знает: такое можно схватить. Сомкнуть. Проглотить. Только разум не понимает, откуда эта уверенность.*\n\n*Акира тихо отступает назад, возвращается в комнату и закрывает дверь. Глазами ищет, что можно схватить. Подойти? Спуститься? Ударить? Спрятаться?*\n\n*И вспоминает не картинку, а простую фразу отца: если кто-то незнакомый придёт — беги. Не оставайся. Найди человека из записки. Это по работе. Главное — беги… и найди Рэя.*\n\n*Акира резко смотрит на стол, хватает записку и разворачивает её.*\n\n**Акира** — Рэй. Восточный сектор.\n\n*Пойти вниз? Спросить? Остаться? Бежать? Тело уже помнит, как открывается окно. Руки помнят, чем можно ударить. А имя из чужого голоса всё ещё царапает где-то под кожей.*\n\n━━━━━━━━━━━━━━━━━━━━\nЧто можно сделать:\n\nСпуститься вниз.\nОстаться у двери и слушать дальше.\nОткрыть окно и сбежать.\nОсмотреть комнату и найти, что взять с собой.\n\nЧто Акира могла бы сказать:\n— Рэй. Восточный сектор.\n— Кто вы такие?\n— Папа. От двери.\n\nМысли Акиры:\n— Если ошибиться сейчас — назад уже не вернуться.\n— Отец сказал бежать.\n— Имя Ирэй не должно было всплыть само.\n━━━━━━━━━━━━━━━━━━━━",
+  "participants": [
+    "akira",
+    "jun_carter",
+    "irey",
+    "emma"
+  ],
+  "active_character_ids": [
+    "akira"
+  ],
+  "nearby_character_ids": [
+    "jun_carter",
+    "irey",
+    "emma"
+  ],
+  "conditional_character_ids": [
+    "raiden"
+  ],
+  "required_character_ids": [
+    "akira",
+    "jun_carter",
+    "irey",
+    "emma"
+  ],
+  "required_canon_files": [
+    "data/canon/canon_index.md",
+    "data/canon/world_public_lore.md",
+    "data/canon/world_hidden_lore.md",
+    "data/canon/kairos_public_and_hidden.md"
+  ],
+  "required_files": [
+    "data/gpt/engine_prompt.md",
+    "data/gpt/scene_format.md",
+    "data/rules/source_loading_rules.md",
+    "data/rules/knowledge_rules.md",
+    "data/rules/player_control_rules.md",
+    "data/canon/canon_index.md",
+    "data/canon/world_public_lore.md",
+    "data/canon/world_hidden_lore.md",
+    "data/canon/kairos_public_and_hidden.md",
+    "data/state/current_state.json",
+    "data/state/knowledge_state.json",
+    "data/state/relationships.json",
+    "data/state/inventory_state.json",
+    "data/state/scene_history.json",
+    "data/characters/main/akira.json",
+    "data/characters/main/akira_history.json",
+    "data/characters/main/jun_carter.json",
+    "data/characters/main/jun_carter_history.json",
+    "data/characters/main/irey.json",
+    "data/characters/main/irey_history.json",
+    "data/characters/main/emma.json",
+    "data/characters/main/emma_history.json"
+  ],
+  "conditional_required_files": {
+    "raiden_after_trigger": [
+      "data/characters/main/raiden.json",
+      "data/characters/main/raiden_history.json"
+    ]
+  },
+  "scene_participants": [
+    {
+      "id": "akira",
+      "canon_name": "Акира Акацуми",
+      "card_ref": "data/characters/main/akira.json",
+      "linked_ref": "data/characters/main/akira_history.json",
+      "role_in_scene": "player character; wakes up and hears strangers downstairs",
+      "pov_name": "Акира",
+      "known_to_akira": true,
+      "can_speak": true,
+      "can_act": true,
+      "notes": [
+        "Игрок управляет только Акирой.",
+        "Акира знает только последние два года и записку: Рэй / Восточный сектор.",
+        "Записка — инструкция Джуна, не цель Ирэя/Эммы."
+      ]
+    },
+    {
+      "id": "jun_carter",
+      "canon_name": "Джун Картер",
+      "card_ref": "data/characters/main/jun_carter.json",
+      "linked_ref": "data/characters/main/jun_carter_history.json",
+      "role_in_scene": "Akira's father/protector; gave the Ray/East Sector escape direction",
+      "pov_name": "отец",
+      "known_to_akira": true,
+      "can_speak": true,
+      "can_act": true,
+      "notes": [
+        "Джун защищает Акиру и тянет время.",
+        "Рэй / Восточный сектор — его план спасения для Акиры.",
+        "Джун не отправляет Акиру к Ирэю или Эмме.",
+        "Джун не раскрывает Акире всю правду на старте."
+      ]
+    },
+    {
+      "id": "irey",
+      "canon_name": "Ирэй",
+      "card_ref": "data/characters/main/irey.json",
+      "linked_ref": "data/characters/main/irey_history.json",
+      "role_in_scene": "male white-haired visitor; came by Akira's trace; knows Akira, but Akira does not know him",
+      "pov_name": "незнакомый мужчина / незнакомый мужской голос / беловолосый мужчина",
+      "known_to_akira": false,
+      "can_speak": true,
+      "can_act": true,
+      "notes": [
+        "POV Акиры: незнакомый мужчина. Знание Ирэя: он знает Акиру и пришёл по её следу.",
+        "Ирэй не знает об амнезии заранее.",
+        "Ирэй не хочет вести Акиру в Восточный сектор.",
+        "Ирэй не ведёт Акиру на материк кайросов.",
+        "Восточный сектор — не его маршрут.",
+        "Первая реакция: живую Акиру и её чужой взгляд он должен почувствовать как сбой контроля."
+      ]
+    },
+    {
+      "id": "emma",
+      "canon_name": "Эмма",
+      "card_ref": "data/characters/main/emma.json",
+      "linked_ref": "data/characters/main/emma_history.json",
+      "role_in_scene": "female white-haired visitor; impatient pressure factor; can create water/pressure energy impulse",
+      "pov_name": "незнакомая беловолосая девушка / женский голос / Женский голос снизу",
+      "known_to_akira": false,
+      "can_speak": true,
+      "can_act": true,
+      "notes": [
+        "В исходном text строки Женский голос снизу = Эмма, но видимый лейбл менять нельзя, пока Акира не знает имени.",
+        "Эмма знает, что цель сцены — Акира.",
+        "Эмма не хочет вести Акиру в Восточный сектор.",
+        "Эмма не ведёт Акиру на материк кайросов.",
+        "Эмма действует в линии Самуэля: доставить/передать Акиру Самуэлю.",
+        "Эмма может использовать энергию воды/давления; это не Эхо."
+      ]
+    },
+    {
+      "id": "raiden",
+      "canon_name": "Райден Стэрлинг",
+      "card_ref": "data/characters/main/raiden.json",
+      "linked_ref": "data/characters/main/raiden_history.json",
+      "role_in_scene": "conditional arrival around 03:02 on motorcycle after energy impulse or road escape branch",
+      "pov_name": "незнакомый парень с пирсингом / парень на мотоцикле / высокий парень в косухе",
+      "known_to_akira": false,
+      "can_speak": true,
+      "can_act": true,
+      "conditional_presence": true,
+      "conditions": [
+        "emma_energy_impulse_occurred == true",
+        "energy_flare_occurred == true",
+        "akira_escaped_to_road == true"
+      ],
+      "notes": [
+        "Райден появляется только около 03:02 и только по условию.",
+        "Причина его близости — личный маршрут к морю 31 августа, а не знание об Акире.",
+        "Райден не помнит Акиру и не знает Ирэя."
+      ]
+    }
+  ],
+  "scene_protocol": {
+    "exact_text_lock": {
+      "active": true,
+      "scope": "first_turn_start_scene_output",
+      "rule": "Первый вывод start_scene должен быть дословно из поля text. Нельзя переписывать, сокращать, расширять, менять лейблы говорящих или продолжать сцену поверх готового текста. После хода игрока продолжать только от последнего состояния этой сцены."
+    },
+    "after_first_player_turn": {
+      "rule": "После первого действия игрока НЕ повторять стартовый текст. Продолжать от того, что игрок выбрал/сделал, с учётом exact start_scene state, participants, knowledge_table и story_flags."
+    },
+    "voice_identity_map": {
+      "Женский голос снизу": "emma",
+      "Незнакомый мужской голос": "irey"
+    },
+    "core": [
+      "Стартовая сцена происходит ночью в доме Джуна.",
+      "Акира слышит голоса снизу и не знает имён пришедших.",
+      "Женский голос снизу = Эмма для API; видимый лейбл не менять, пока Акира не знает имени.",
+      "Незнакомый мужской голос = Ирэй для API; видимый лейбл не менять, пока Акира не знает имени.",
+      "Записка Рэй / Восточный сектор — инструкция Джуна для Акиры, а не цель Ирэя или Эммы.",
+      "Ирэй и Эмма пришли по следу Акиры, но не ведут её в Восточный сектор и не ведут её на материк кайросов.",
+      "Райден появляется только условно около 03:02 согласно raiden_0302_branch."
+    ],
+    "must_not_happen": [
+      "Не связывать цель Ирэя или Эммы с Восточным сектором.",
+      "Не писать, что Ирэй/Эмма хотят отвести Акиру в Восточный сектор.",
+      "Не писать, что Ирэй/Эмма хотят вернуть Акиру на материк кайросов.",
+      "Не писать, что материк кайросов — дом Акиры.",
+      "Не писать, что Ирэй не знает Акиру.",
+      "Не писать, что Эмма не знает, кого ищет.",
+      "Не раскрывать амнезию Ирэю заранее.",
+      "Не вводить Райдена до условий 03:02/импульс/дорога.",
+      "Не вводить Эхо в первой сцене.",
+      "Не раскрывать, что Акира — источник баланса."
+    ],
+    "pov_naming": {
+      "irey": "незнакомый мужчина / незнакомый мужской голос / беловолосый мужчина",
+      "emma": "незнакомая беловолосая девушка / женский голос / Женский голос снизу",
+      "raiden": "незнакомый парень с пирсингом / парень на мотоцикле / высокий парень в косухе",
+      "jun_carter": "отец / Джун, если фокус не строго POV Акиры"
+    }
+  },
+  "knowledge_table": {
+    "akira": {
+      "knows": [
+        "Джун — отец",
+        "Рэй",
+        "Восточный сектор из записки",
+        "в доме чужие голоса",
+        "внизу двое беловолосых"
+      ],
+      "does_not_know": [
+        "имя Ирэя",
+        "имя Эммы",
+        "имя Райдена",
+        "причина прихода беловолосых",
+        "связь Ирэя с её прошлым",
+        "почему Рэй/Восточный сектор важны",
+        "что она кайрос",
+        "что она источник баланса",
+        "что материк кайросов вообще не является её домом"
+      ]
+    },
+    "jun_carter": {
+      "ref": "data/characters/main/jun_carter.json",
+      "linked_ref": "data/characters/main/jun_carter_history.json"
+    },
+    "irey": {
+      "ref": "data/characters/main/irey.json",
+      "linked_ref": "data/characters/main/irey_history.json"
+    },
+    "emma": {
+      "ref": "data/characters/main/emma.json",
+      "linked_ref": "data/characters/main/emma_history.json"
+    },
+    "raiden": {
+      "ref": "data/characters/main/raiden.json",
+      "linked_ref": "data/characters/main/raiden_history.json"
+    }
+  },
+  "conditions": {
+    "sequence": 1,
+    "exact_text_required_on_first_turn": true,
+    "voice_identity_map": {
+      "Женский голос снизу": "emma",
+      "Незнакомый мужской голос": "irey"
+    },
+    "raiden_0302_branch": {
+      "target_time": "1206-08-31T03:02",
+      "trigger_any": [
+        "emma_energy_impulse_occurred",
+        "energy_flare_occurred",
+        "akira_escaped_to_road"
+      ],
+      "arrival": "Райден на мотоцикле, не по Акиру, а из-за маршрута к морю/реакции на энергетический импульс.",
+      "strict_card_ref": "data/characters/main/raiden.json",
+      "strict_linked_ref": "data/characters/main/raiden_history.json"
+    }
+  },
+  "choices": [
+    {
+      "choice_id": "go_downstairs",
+      "text": "Спуститься вниз",
+      "next_scene_id": null,
+      "character_id": "akira",
+      "effects": {
+        "story_flags": {
+          "akira_chose_confrontation": true
+        }
+      }
+    },
+    {
+      "choice_id": "listen_more",
+      "text": "Остаться у двери и слушать дальше",
+      "next_scene_id": null,
+      "character_id": "akira",
+      "effects": {
+        "story_flags": {
+          "akira_chose_listening": true
+        }
+      }
+    },
+    {
+      "choice_id": "escape_window",
+      "text": "Открыть окно и сбежать",
+      "next_scene_id": null,
+      "character_id": "akira",
+      "effects": {
+        "story_flags": {
+          "akira_chose_escape": true,
+          "akira_may_reach_road": true
+        }
+      }
+    },
+    {
+      "choice_id": "search_room",
+      "text": "Осмотреть комнату и найти, что взять с собой",
+      "next_scene_id": null,
+      "character_id": "akira",
+      "effects": {
+        "story_flags": {
+          "akira_chose_search_room": true
+        }
+      }
+    }
+  ],
+  "effects": {
+    "current_date": "1206-08-31",
+    "time_of_day": "ночь",
+    "location_id": "jun_house_akira_room",
+    "active_characters": [
+      "akira"
+    ],
+    "nearby_characters": [
+      "jun_carter",
+      "irey",
+      "emma"
+    ],
+    "story_flags": {
+      "start_scene_seen": true,
+      "white_haired_visitors_arrived": true,
+      "akira_heard_voices": true,
+      "akira_has_note_ray_east_sector": true,
+      "akira_knows_ray_name": true,
+      "akira_knows_east_sector_note": true,
+      "east_sector_note_belongs_to_jun_escape_plan": true,
+      "intruders_do_not_seek_east_sector_route": true,
+      "intruders_do_not_seek_kairos_mainland_route": true,
+      "father_fate_unresolved": true,
+      "irey_present_unknown_to_akira": true,
+      "emma_present_unknown_to_akira": true,
+      "emma_energy_allowed": true,
+      "raiden_conditional_0302_motorcycle_arrival": true,
+      "raiden_arrival_requires_emma_energy_or_road_escape": true,
+      "no_echo_in_start_scene": true
+    }
+  },
+  "next_scene_ids": [],
+  "required_checks_before_answer": [
+    "If this is the first start_scene output, return scene.text exactly, no rewrite.",
+    "After player input, continue from scene.text and player action; do not replay the first scene.",
+    "Do not change visible labels Женский голос снизу / Незнакомый мужской голос before Akira knows names.",
+    "Do not make Irey or Emma want to take Akira to East Sector.",
+    "Do not make Irey, Emma or Samuel want to return Akira to kairos mainland.",
+    "Do not reveal Akira as kairos or balance source.",
+    "Do not introduce Echo in start_scene.",
+    "Do not introduce Raiden until 03:02 branch trigger."
+  ]
+}
