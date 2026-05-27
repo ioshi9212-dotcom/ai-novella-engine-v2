@@ -294,6 +294,58 @@ data/canon/relationships/akira_raiden_connection.md
 
 ---
 
+## Rule files by scene tags
+
+### Start scene continuation
+
+Если `scene_tags` содержит:
+
+```text
+start_scene
+exact_text_first_turn
+anchor_freeplay_after_start_scene
+```
+
+или сцена является непосредственным продолжением стартовой сцены после первого действия игрока, добавить:
+
+```text
+data/rules/start_scene_continuation_rules.md
+```
+
+Этот файл нужен, чтобы:
+
+- не повторять стартовый текст после первого хода;
+- не буксовать до 03:02;
+- правильно вести Ирэя, Эмму, Джуна и условное появление Райдена;
+- не путать энергию Эммы с Эхо;
+- не делать Ирэя знатоком амнезии заранее.
+
+### Timeline / Echo event rules
+
+Если `scene_tags` содержит:
+
+```text
+no_echo
+timeline
+first_raid_echo
+echo_before_first_raid
+```
+
+или текущая дата раньше `1206-09-15`, а сцена может случайно подтянуть Эхо, добавить:
+
+```text
+data/rules/timeline_event_rules.md
+```
+
+Этот файл нужен, чтобы:
+
+- не вводить активные Эхо до первого рейда;
+- не запрещать обычную энергию персонажей;
+- не путать Эхо с энергией;
+- держать первое появление Эхо как событие 1206-09-15.
+
+---
+
 ## Canon files by active/nearby characters
 
 Если в `active_character_ids` или подтянутых `nearby_character_ids` есть:
@@ -389,3 +441,5 @@ data/canon/energy_system.md
 11. Подтянут ли `kairos_public_and_hidden.md`, если в сцене есть кайросы, Ирэй, Эмма или Самуэль.
 12. Не сделан ли ложный вывод, что Акиру хотят вернуть на материк кайросов.
 13. Если подтянут `akira_raiden_connection.md`, не сводит ли ИИ Акиру и Райдена насильно и не обесценивает ли выбор игрока.
+14. Если сцена до 1206-09-15, не введены ли активные Эхо раньше first_raid_echo.
+15. Если сцена продолжает start_scene, двигается ли она к 03:02 вместо пустого стояния на месте.
