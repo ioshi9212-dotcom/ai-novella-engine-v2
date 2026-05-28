@@ -42,7 +42,7 @@ STATE_FILES = [
 
 class TurnContextRequest(BaseModel):
     player_input: str
-    include_file_contents: bool = True
+    include_file_contents: bool = False
 
 
 @app.on_event("startup")
@@ -225,7 +225,7 @@ def build_api_context(files: list[str], scene_data: dict[str, Any], file_errors:
             if filename.startswith("data/characters/main/") and filename.endswith(".json"):
                 characters.append(compact_character(read_repo_json(filename)))
             elif filename.startswith("data/canon/") or filename.startswith("data/rules/") or filename.startswith("data/gpt/"):
-                rules_and_canon[filename] = read_repo_text(filename, limit=2200)
+                rules_and_canon[filename] = read_repo_text(filename, limit=1600)
         except FileNotFoundError:
             continue
         except Exception as exc:
@@ -336,7 +336,7 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
         "prompt_context": prompt_context,
         "file_contents": file_contents,
         "storage": storage_debug_info(),
-        "next_step": "Use prompt_context as the main instruction/context for the next scene.",
+        "next_step": "Use prompt_context as the main instruction/context for the next scene. Do not request raw file_contents unless debugging a specific file.",
     }
 
 
@@ -350,20 +350,20 @@ def actions_openapi() -> dict[str, Any]:
             "/api/v1/turn/context": {
                 "post": {
                     "operationId": "getTurnContext",
-                    "summary": "Get novella context for the next player turn",
-                    "description": "Returns compact prompt_context, state and optional file contents. This server does not call OpenAI.",
+                    "summary": "Get compact novella context for the next player turn",
+                    "description": "Returns compact prompt_context, api_context and state for the Custom GPT. Use include_file_contents=false by default. This server does not call OpenAI.",
                     "requestBody": {
                         "required": True,
                         "content": {"application/json": {"schema": {
                             "type": "object",
                             "required": ["player_input"],
                             "properties": {
-                                "player_input": {"type": "string"},
-                                "include_file_contents": {"type": "boolean", "default": True}
+                                "player_input": {"type": "string", "description": "The player's latest action or dialogue."},
+                                "include_file_contents": {"type": "boolean", "default": False, "description": "Set true only for debugging a specific file. Normal scene turns should keep false. The main usable context is prompt_context."}
                             }
                         }}}
                     },
-                    "responses": {"200": {"description": "Context bundle for Custom GPT"}}
+                    "responses": {"200": {"description": "Compact context bundle for Custom GPT"}}
                 }
             }
         }
