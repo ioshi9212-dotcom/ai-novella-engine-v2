@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Any
 
 from fastapi import FastAPI
@@ -72,6 +73,12 @@ def read_repo_text(relative_path: str) -> str:
     return text[:12000]
 
 
+def read_repo_json(relative_path: str) -> dict[str, Any]:
+    text = read_repo_text(relative_path)
+    data = json.loads(text)
+    return data if isinstance(data, dict) else {}
+
+
 def read_all_state() -> tuple[dict[str, Any], dict[str, str]]:
     ensure_runtime_storage()
     result: dict[str, Any] = {}
@@ -85,19 +92,43 @@ def read_all_state() -> tuple[dict[str, Any], dict[str, str]]:
     return result, errors
 
 
+def add_unique(items: list[str], new_items: list[str]) -> None:
+    for item in new_items:
+        if isinstance(item, str) and item and item not in items:
+            items.append(item)
+
+
+def add_scene_required_files(files: list[str], scene_id: str, file_errors: dict[str, str]) -> None:
+    scene_path = f"data/scenes/{scene_id}.json"
+    add_unique(files, [scene_path])
+    try:
+        scene_data = read_repo_json(scene_path)
+    except Exception as exc:
+        file_errors[scene_path] = str(exc)
+        return
+
+    add_unique(files, scene_data.get("required_files", []))
+    add_unique(files, scene_data.get("required_canon_files", []))
+
+    character_ids = scene_data.get("required_character_ids", [])
+    for character_id in character_ids:
+        if isinstance(character_id, str):
+            add_unique(files, [f"data/characters/main/{character_id}.json"])
+
+
 @app.post("/api/v1/turn/context", operation_id="getTurnContext")
 def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
     state, state_errors = read_all_state()
     current_state = state.get("current_state.json", {})
     files = list(BASE_CONTEXT_FILES)
+    file_errors: dict[str, str] = {}
 
     scene_id = current_state.get("current_scene_id") if isinstance(current_state, dict) else None
     if isinstance(scene_id, str) and scene_id:
-        files.append(f"data/scenes/{scene_id}.json")
+        add_scene_required_files(files, scene_id, file_errors)
 
     file_contents: dict[str, str] = {}
     missing_files: list[str] = []
-    file_errors: dict[str, str] = {}
     if payload.include_file_contents:
         for filename in files:
             try:
