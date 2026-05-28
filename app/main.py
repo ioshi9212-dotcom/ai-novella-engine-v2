@@ -118,7 +118,8 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
         "turn_number": current_state.get("turn_number", 0),
         "story_flags": current_state.get("story_flags", {}),
         "primary_file": scene_file,
-        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim.",
+        "format_file": "data/gpt/scene_format.md",
+        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim. For later scene turns, also call getFileContent with path=format_file and keep that format.",
     }
 
 
@@ -133,7 +134,7 @@ def actions_openapi() -> dict[str, Any]:
                 "post": {
                     "operationId": "getTurnContext",
                     "summary": "Get minimal current scene pointer",
-                    "description": "Returns only minimal state and the primary file path. Then call getFileContent for that file.",
+                    "description": "Returns only minimal state, the primary scene file path and the format file path. Then call getFileContent for those files.",
                     "requestBody": {
                         "required": True,
                         "content": {
@@ -155,7 +156,7 @@ def actions_openapi() -> dict[str, Any]:
                 "post": {
                     "operationId": "getFileContent",
                     "summary": "Get one repository file or one JSON field",
-                    "description": "Returns only the requested file content. Use json_field=text for start_scene text.",
+                    "description": "Returns only the requested file content. Use json_field=text for start_scene text. Use path=data/gpt/scene_format.md for mandatory scene format.",
                     "requestBody": {
                         "required": True,
                         "content": {
@@ -166,7 +167,7 @@ def actions_openapi() -> dict[str, Any]:
                                     "properties": {
                                         "path": {
                                             "type": "string",
-                                            "description": "Repository file path, for example data/scenes/start_scene.json"
+                                            "description": "Repository file path, for example data/scenes/start_scene.json or data/gpt/scene_format.md"
                                         },
                                         "json_field": {
                                             "type": "string",
