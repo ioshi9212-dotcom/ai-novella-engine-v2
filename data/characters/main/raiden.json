@@ -26,7 +26,8 @@
     "data/characters/main/ray.json",
     "data/canon/east_sector_base.md",
     "data/canon/relationships/akira_raiden_connection.md",
-    "data/canon/relationships/raiden_haru_friendship.md"
+    "data/canon/relationships/raiden_haru_friendship.md",
+    "data/canon/relationships/east_sector_command_links.md"
   ],
   "short_scene_use": "Основная сценическая карточка Райдена: внешность, энергия, бой, речь, привычки, Восточный сектор и поведение в текущих сценах. Рэй Картер — отдельный персонаж, не алиас Райдена. Скрытая природа, день рождения/море, память, связь с Акирой и семейные/прошлые детали лежат в linked_files.",
   "appearance": {
@@ -103,7 +104,7 @@
     "Рэй Картер — отдельный персонаж с файлом data/characters/main/ray.json. Не смешивать Рэя и Райдена."
   ],
   "knowledge_rules": [
-    "Не писать, что Райден не знает Рэя, если это не подтверждено конкретной сценой, карточкой или relationships.",
+    "Не писать, что Райден знает или не знает Рэя, если это не подтверждено конкретной сценой, карточкой или relationships.",
     "Не писать, что связь Райдена с Восточным сектором не раскрыта: она закреплена в его основной карточке.",
     "Можно писать, что Райден появился не по поручению Джуна, Рэя или базы и не по знанию об Акире."
   ],
