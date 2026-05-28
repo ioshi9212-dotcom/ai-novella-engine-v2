@@ -1,13 +1,21 @@
 {
-  "current_scene_id": null,
-  "current_date": null,
-  "time_of_day": null,
-  "location_id": null,
+  "current_scene_id": "start_scene",
+  "current_date": "1206-08-31",
+  "time_of_day": "02:40",
+  "location_id": "jun_house_akira_room",
   "active_characters": ["akira"],
-  "nearby_characters": [],
-  "scene_participants": [],
-  "last_scene_anchor": "",
+  "nearby_characters": ["jun_carter", "irey", "emma"],
+  "scene_participants": ["akira", "jun_carter", "irey", "emma"],
+  "last_scene_anchor": "start_scene_first_turn_not_output",
   "last_player_input": "",
   "turn_number": 0,
-  "notes": []
+  "story_flags": {
+    "start_scene_first_turn_output": false,
+    "raiden_triggered": false,
+    "samuel_official_team_possible_at_0310": false,
+    "first_raid_echo_completed": false
+  },
+  "notes": [
+    "Default state starts at required start_scene. First output must use data/scenes/start_scene.json verbatim until start_scene_first_turn_output becomes true."
+  ]
 }
