@@ -72,17 +72,22 @@ def read_repo_text(relative_path: str) -> str:
     return text[:12000]
 
 
-def read_all_state() -> dict[str, Any]:
+def read_all_state() -> tuple[dict[str, Any], dict[str, str]]:
     ensure_runtime_storage()
     result: dict[str, Any] = {}
+    errors: dict[str, str] = {}
     for filename in STATE_FILES:
-        result[filename] = read_state(filename)
-    return result
+        try:
+            result[filename] = read_state(filename)
+        except Exception as exc:
+            result[filename] = {}
+            errors[filename] = str(exc)
+    return result, errors
 
 
 @app.post("/api/v1/turn/context", operation_id="getTurnContext")
 def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
-    state = read_all_state()
+    state, state_errors = read_all_state()
     current_state = state.get("current_state.json", {})
     files = list(BASE_CONTEXT_FILES)
 
@@ -92,12 +97,15 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
 
     file_contents: dict[str, str] = {}
     missing_files: list[str] = []
+    file_errors: dict[str, str] = {}
     if payload.include_file_contents:
         for filename in files:
             try:
                 file_contents[filename] = read_repo_text(filename)
             except FileNotFoundError:
                 missing_files.append(filename)
+            except Exception as exc:
+                file_errors[filename] = str(exc)
 
     return {
         "status": "ok",
@@ -105,8 +113,11 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
         "player_input": payload.player_input,
         "required_files": files,
         "missing_files": missing_files,
+        "state_errors": state_errors,
+        "file_errors": file_errors,
         "state": state,
         "file_contents": file_contents,
+        "storage": storage_debug_info(),
         "next_step": "Use this returned context to write the next scene in ChatGPT.",
     }
 
@@ -158,22 +169,13 @@ def actions_openapi() -> dict[str, Any]:
                                             "status": {"type": "string"},
                                             "mode": {"type": "string"},
                                             "player_input": {"type": "string"},
-                                            "required_files": {
-                                                "type": "array",
-                                                "items": {"type": "string"}
-                                            },
-                                            "missing_files": {
-                                                "type": "array",
-                                                "items": {"type": "string"}
-                                            },
-                                            "state": {
-                                                "type": "object",
-                                                "additionalProperties": True
-                                            },
-                                            "file_contents": {
-                                                "type": "object",
-                                                "additionalProperties": {"type": "string"}
-                                            },
+                                            "required_files": {"type": "array", "items": {"type": "string"}},
+                                            "missing_files": {"type": "array", "items": {"type": "string"}},
+                                            "state_errors": {"type": "object", "additionalProperties": {"type": "string"}},
+                                            "file_errors": {"type": "object", "additionalProperties": {"type": "string"}},
+                                            "state": {"type": "object", "additionalProperties": True},
+                                            "file_contents": {"type": "object", "additionalProperties": {"type": "string"}},
+                                            "storage": {"type": "object", "additionalProperties": {"type": "string"}},
                                             "next_step": {"type": "string"}
                                         }
                                     }
