@@ -71,6 +71,20 @@ def read_state_safe(filename: str) -> Any:
         return {} if filename != "scene_history.json" else []
 
 
+def build_hard_rules(scene_id: str) -> list[str]:
+    if scene_id != "start_scene":
+        return []
+    return [
+        "До 03:10 запрещено вводить людей Самуэля, официальную группу, блокировку дома, команды по связи, фразы 'объект подтверждён', 'дом блокировать', 'цель подтверждена' и любые аналоги.",
+        "До 03:10 линия Самуэля существует только как скрытый мотив Эммы; она не проявляется внешними людьми, радио, командами или машинами.",
+        "До 03:02 внешнее напряжение можно давать только нейтрально: шум дороги, ветер, мотор вдалеке, шаги, реакция энергии. Не идентифицировать это как людей Самуэля.",
+        "Райден появляется только около 03:02 и только если уже сработал emma_energy_impulse_occurred, energy_flare_occurred или akira_escaped_to_road.",
+        "Если время раньше 03:02, Райден может быть только подготовлен нейтральным шумом мотора/дороги; он не обязан появляться и не знает Акиру.",
+        "Эхо в start_scene запрещены. Энергия Эммы воды/давления разрешена и не считается Эхо.",
+        "Не использовать слово 'объект' для Акиры в ранней сцене: это звучит как люди Самуэля и ломает тайминг."
+    ]
+
+
 @app.post("/api/v1/file/content", operation_id="getFileContent")
 def get_file_content(payload: FileContentRequest) -> dict[str, Any]:
     path = repo_path(payload.path)
@@ -119,7 +133,8 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
         "story_flags": current_state.get("story_flags", {}),
         "primary_file": scene_file,
         "format_file": "data/gpt/scene_format.md",
-        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim. For later scene turns, also call getFileContent with path=format_file and keep that format.",
+        "hard_rules": build_hard_rules(scene_id),
+        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim. For later scene turns, also call getFileContent with path=format_file and keep that format. Always obey hard_rules.",
     }
 
 
@@ -134,7 +149,7 @@ def actions_openapi() -> dict[str, Any]:
                 "post": {
                     "operationId": "getTurnContext",
                     "summary": "Get minimal current scene pointer",
-                    "description": "Returns only minimal state, the primary scene file path and the format file path. Then call getFileContent for those files.",
+                    "description": "Returns minimal state, primary scene file, format file and small hard_rules. Then call getFileContent for needed files.",
                     "requestBody": {
                         "required": True,
                         "content": {
@@ -142,14 +157,12 @@ def actions_openapi() -> dict[str, Any]:
                                 "schema": {
                                     "type": "object",
                                     "required": ["player_input"],
-                                    "properties": {
-                                        "player_input": {"type": "string"}
-                                    }
+                                    "properties": {"player_input": {"type": "string"}}
                                 }
                             }
                         }
                     },
-                    "responses": {"200": {"description": "Minimal scene pointer"}}
+                    "responses": {"200": {"description": "Minimal scene pointer with hard rules"}}
                 }
             },
             "/api/v1/file/content": {
@@ -165,14 +178,8 @@ def actions_openapi() -> dict[str, Any]:
                                     "type": "object",
                                     "required": ["path"],
                                     "properties": {
-                                        "path": {
-                                            "type": "string",
-                                            "description": "Repository file path, for example data/scenes/start_scene.json or data/gpt/scene_format.md"
-                                        },
-                                        "json_field": {
-                                            "type": "string",
-                                            "description": "Optional JSON field to return, for example text"
-                                        }
+                                        "path": {"type": "string", "description": "Repository file path, for example data/scenes/start_scene.json or data/gpt/scene_format.md"},
+                                        "json_field": {"type": "string", "description": "Optional JSON field to return, for example text"}
                                     }
                                 }
                             }
