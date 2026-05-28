@@ -110,7 +110,8 @@ def ensure_runtime_storage() -> StoragePaths:
         if template.exists():
             shutil.copy2(template, target)
         else:
-            target.write_text("{}\n", encoding="utf-8")
+            default_text = "[]\n" if filename == "scene_history.json" else "{}\n"
+            target.write_text(default_text, encoding="utf-8")
 
     return paths
 
@@ -126,22 +127,19 @@ def state_file_path(filename: str) -> Path:
     return get_storage_paths().state_root / filename
 
 
-def read_json(path: Path) -> dict[str, Any]:
-    """Read JSON object from path. Empty files are treated as {}."""
+def read_json(path: Path) -> Any:
+    """Read JSON from path. Empty files are treated as {}."""
 
     if not path.exists():
         return {}
     raw = path.read_text(encoding="utf-8").strip()
     if not raw:
         return {}
-    data = json.loads(raw)
-    if not isinstance(data, dict):
-        raise ValueError(f"Expected JSON object in {path}")
-    return data
+    return json.loads(raw)
 
 
-def write_json_atomic(path: Path, data: dict[str, Any]) -> None:
-    """Atomically write JSON object to path."""
+def write_json_atomic(path: Path, data: Any) -> None:
+    """Atomically write JSON to path."""
 
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = path.with_suffix(path.suffix + ".tmp")
@@ -152,14 +150,14 @@ def write_json_atomic(path: Path, data: dict[str, Any]) -> None:
     os.replace(tmp_path, path)
 
 
-def read_state(filename: str) -> dict[str, Any]:
+def read_state(filename: str) -> Any:
     """Read a runtime state JSON file from the volume/local runtime root."""
 
     ensure_runtime_storage()
     return read_json(state_file_path(filename))
 
 
-def write_state(filename: str, data: dict[str, Any]) -> None:
+def write_state(filename: str, data: Any) -> None:
     """Write a runtime state JSON file to the volume/local runtime root."""
 
     ensure_runtime_storage()
@@ -184,5 +182,5 @@ def storage_debug_info() -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    resolved = ensure_runtime_storage()
+    ensure_runtime_storage()
     print(json.dumps(storage_debug_info(), ensure_ascii=False, indent=2))
