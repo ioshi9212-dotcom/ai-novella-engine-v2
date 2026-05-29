@@ -39,6 +39,7 @@ data/rules/relationship_state_rules.md
 data/rules/character_rotation_rules.md
 data/rules/npc_creation_rules.md
 data/canon/canon_index.md
+data/calendar/story_calendar.json
 data/calendar/character_availability.json
 data/state/current_state.json
 data/state/knowledge_state.json
@@ -48,6 +49,32 @@ data/state/scene_history.json
 ```
 
 Если state-файла нет, движок должен создать пустой шаблон, а не заменять его догадками.
+
+---
+
+## Calendar rules
+
+`data/calendar/story_calendar.json` — единый источник календарных событий.
+
+Его нужно учитывать перед:
+
+- пропуском времени;
+- переходом даты;
+- появлением обязательной сцены;
+- появлением персонажа, который доступен только после даты/события;
+- рейдом;
+- сценой Эхо;
+- медблоком после прибытия на базу;
+- сценами с Рэем до 7 сентября;
+- возвращением Хару 21 сентября.
+
+Календарь важнее импровизации.
+
+Если игрок пропускает время, остановить пропуск на ближайшем `required=true` событии.
+
+Если игрок активно действует, не прыгать резко к следующей дате.
+
+Если событие уже произошло из-за действий игрока раньше, не повторять его дословно, а отметить как completed и двигаться дальше.
 
 ---
 
@@ -124,6 +151,7 @@ data/scenes/{current_scene_id}.json
 ```text
 data/state/current_state.json
 data/state/scene_history.json
+data/calendar/story_calendar.json
 ```
 
 Если scene-файл содержит `required_files`, `required_canon_files`, `required_character_ids`, `scene_tags` — учитывать их.
@@ -138,6 +166,7 @@ data/state/scene_history.json
 
 ```text
 data/canon/east_sector_base.md
+data/canon/relationships/east_sector_command_links.md
 ```
 
 ---
@@ -232,6 +261,7 @@ data/canon/inner_subtext_style.md
 
 ```text
 data/rules/start_scene_continuation_rules.md
+data/calendar/story_calendar.json
 ```
 
 ### Timeline / Echo
@@ -240,6 +270,7 @@ data/rules/start_scene_continuation_rules.md
 
 ```text
 data/rules/timeline_event_rules.md
+data/calendar/story_calendar.json
 ```
 
 До первого рейда активные Эхо не появляются, но энергия персонажей разрешена.
@@ -264,6 +295,7 @@ data/rules/akira_current_overrides.md
 data/characters/main/yuna.json
 data/characters/main/yuna_history.json
 data/calendar/character_availability.json
+data/calendar/story_calendar.json
 data/rules/npc_creation_rules.md
 ```
 
@@ -283,6 +315,7 @@ data/canon/akira_hidden_past.md
 data/characters/main/natsu.json
 data/characters/main/natsu_history.json
 data/calendar/character_availability.json
+data/calendar/story_calendar.json
 ```
 
 Нацу не появляется до первого контакта Акиры с Эхо или его последствий.
@@ -295,6 +328,7 @@ data/calendar/character_availability.json
 data/rules/character_rotation_rules.md
 data/rules/npc_creation_rules.md
 data/calendar/character_availability.json
+data/calendar/story_calendar.json
 data/characters/character_id_index.json
 ```
 
@@ -357,48 +391,4 @@ data/canon/relationships/raiden_haru_friendship.md
 - случайного специалиста вместо Нацу после события Эхо;
 - NPC registry как замену конкретной карточке.
 
-Нельзя превращать hidden-lore в реплику NPC или внутренний монолог.
-
----
-
-## Required files output
-
-Каждый `turn-contract` должен возвращать:
-
-```json
-{
-  "required_files": [],
-  "active_character_ids": [],
-  "nearby_character_ids": [],
-  "scene_participants": [],
-  "forbidden_files": [],
-  "required_checks_before_answer": []
-}
-```
-
----
-
-## Self-check перед ответом
-
-Перед генерацией сцены проверить:
-
-1. Загружена ли карточка Акиры.
-2. Подтянуты ли `linked_files` Акиры.
-3. Загружены ли карточки говорящих NPC.
-4. Подтянуты ли `linked_files` говорящих NPC.
-5. Проверен ли `knowledge_state`.
-6. Не попал ли hidden-lore в реплику или внутренний монолог.
-7. Не пишет ли ИИ решение за Акиру.
-8. Не подтянуты ли лишние персонажи.
-9. Подтянут ли локационный canon.
-10. Подтянут ли `energy_system.md`, если есть энергия.
-11. Подтянут ли `kairos_public_and_hidden.md`, если есть кайросы/Ирэй/Эмма/Самуэль.
-12. Подтянут ли `akira_hidden_past.md`, если сцена касается скрытого прошлого.
-13. Если есть Акира + Райден, не сводит ли ИИ их насильно.
-14. Если есть Райден или Хару, проверена ли их связка.
-15. Если дата до `1206-09-15`, не введены ли активные Эхо.
-16. Если сцена продолжает start_scene, движется ли она к 03:02 без пустого стояния.
-17. Если нужен медик, проверена ли Юна.
-18. Если нужен специалист после Эхо, проверен ли Нацу.
-19. Если появился новый NPC, есть ли причина, почему не подошёл существующий персонаж.
-20. Внутренние мысли написаны как короткий след, а не объяснение.
+Нельзя превращать календарь в автоспойлер: future events направляют порядок, но не раскрываются игроку прямым текстом.
