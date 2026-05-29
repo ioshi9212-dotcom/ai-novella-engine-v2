@@ -6,7 +6,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from app.core.storage import ensure_runtime_storage, get_storage_paths, read_state, storage_debug_info
+from app.core.storage import ensure_runtime_storage, get_storage_paths, read_state, storage_debug_info, write_state
 
 PUBLIC_BASE_URL = "https://ai-novella-engine-v2-production.up.railway.app"
 
@@ -31,6 +31,11 @@ class TurnContextRequest(BaseModel):
 class FileContentRequest(BaseModel):
     path: str
     json_field: str | None = None
+
+
+class SaveStateFileRequest(BaseModel):
+    filename: str
+    content: Any
 
 
 @app.on_event("startup")
@@ -71,6 +76,15 @@ def read_state_safe(filename: str) -> Any:
         return {} if filename != "scene_history.json" else []
 
 
+def validate_state_payload(filename: str, content: Any) -> None:
+    if filename not in STATE_FILES:
+        raise HTTPException(status_code=400, detail=f"Unsupported state file: {filename}")
+    if filename == "scene_history.json" and not isinstance(content, list):
+        raise HTTPException(status_code=400, detail="scene_history.json must be a JSON array")
+    if filename != "scene_history.json" and not isinstance(content, dict):
+        raise HTTPException(status_code=400, detail=f"{filename} must be a JSON object")
+
+
 def build_hard_rules(scene_id: str) -> list[str]:
     base_rules = [
         "Запрещено строить новую причинную цепочку только потому, что это драматически логично. Если причины/факта нет в state, scene file, hard_rules или полученном файле, это не канон.",
@@ -81,7 +95,8 @@ def build_hard_rules(scene_id: str) -> list[str]:
         "Основное имя Райдена — Райден. Не использовать Рэй, Рай или Рэйден как имя/алиас Райдена.",
         "Не утверждать, что Райден знает или не знает Рэя, без проверки relationships/card. Корректно для start_scene: Райден не знает Ирэя и не ехал к дому Джуна по заранее полученному поручению.",
         "Записка 'Рэй / Восточный сектор' ведёт к Рэю Картеру, а не к Райдену как алиасу.",
-        "Перед пропуском времени, вводом рейда, Эхо, Хару, Юны, Нацу, Кая, Широ, Алекс или сценой с Рэем проверять data/calendar/story_calendar.json."
+        "Перед пропуском времени, вводом рейда, Эхо, Хару, Юны, Нацу, Кая, Широ, Алекс или сценой с Рэем проверять data/calendar/story_calendar.json.",
+        "После значимой сцены нужно сохранить изменения state через saveStateFile: current_state, scene_history, knowledge_state и при необходимости relationships/inventory_state."
     ]
 
     if scene_id != "start_scene":
@@ -125,6 +140,18 @@ def get_file_content(payload: FileContentRequest) -> dict[str, Any]:
     }
 
 
+@app.post("/api/v1/state/save", operation_id="saveStateFile")
+def save_state_file(payload: SaveStateFileRequest) -> dict[str, Any]:
+    validate_state_payload(payload.filename, payload.content)
+    write_state(payload.filename, payload.content)
+    return {
+        "status": "ok",
+        "filename": payload.filename,
+        "saved": True,
+        "next_step": "Continue using getTurnContext. Only save facts that characters actually learned, saw, heard, read or inferred in scene."
+    }
+
+
 @app.post("/api/v1/turn/context", operation_id="getTurnContext")
 def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
     current_state = read_state_safe("current_state.json")
@@ -147,8 +174,10 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
         "primary_file": scene_file,
         "format_file": "data/gpt/scene_format.md",
         "calendar_file": "data/calendar/story_calendar.json",
+        "memory_rules_file": "data/state/memory_update_rules.md",
+        "state_files": STATE_FILES,
         "hard_rules": build_hard_rules(scene_id),
-        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim. For later scene turns, also call getFileContent with path=format_file and keep that format. Use calendar_file before time skips, required events, raids, Echo, medblock or character availability. Always obey hard_rules.",
+        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim. For later scene turns, also call getFileContent with path=format_file and keep that format. Use calendar_file before time skips, required events, raids, Echo, medblock or character availability. Use memory_rules_file before saving state. After significant scenes, call saveStateFile for changed state files. Always obey hard_rules.",
     }
 
 
@@ -163,7 +192,7 @@ def actions_openapi() -> dict[str, Any]:
                 "post": {
                     "operationId": "getTurnContext",
                     "summary": "Get minimal current scene pointer",
-                    "description": "Returns minimal state, primary scene file, format file, calendar file and small hard_rules. Then call getFileContent for needed files.",
+                    "description": "Returns minimal state, primary scene file, format file, calendar file, memory rules file and hard_rules. Then call getFileContent for needed files.",
                     "requestBody": {
                         "required": True,
                         "content": {
@@ -183,7 +212,7 @@ def actions_openapi() -> dict[str, Any]:
                 "post": {
                     "operationId": "getFileContent",
                     "summary": "Get one repository file or one JSON field",
-                    "description": "Returns only the requested file content. Use json_field=text for start_scene text. Use path=data/gpt/scene_format.md for mandatory scene format. Use path=data/calendar/story_calendar.json for event timing.",
+                    "description": "Returns only the requested file content. Use json_field=text for start_scene text. Use path=data/gpt/scene_format.md for mandatory scene format. Use path=data/calendar/story_calendar.json for event timing. Use path=data/state/memory_update_rules.md for state saving rules.",
                     "requestBody": {
                         "required": True,
                         "content": {
@@ -192,7 +221,7 @@ def actions_openapi() -> dict[str, Any]:
                                     "type": "object",
                                     "required": ["path"],
                                     "properties": {
-                                        "path": {"type": "string", "description": "Repository file path, for example data/scenes/start_scene.json, data/gpt/scene_format.md or data/calendar/story_calendar.json"},
+                                        "path": {"type": "string", "description": "Repository file path, for example data/scenes/start_scene.json, data/gpt/scene_format.md, data/calendar/story_calendar.json or data/state/memory_update_rules.md"},
                                         "json_field": {"type": "string", "description": "Optional JSON field to return, for example text"}
                                     }
                                 }
@@ -200,6 +229,35 @@ def actions_openapi() -> dict[str, Any]:
                         }
                     },
                     "responses": {"200": {"description": "Single file content"}}
+                }
+            },
+            "/api/v1/state/save": {
+                "post": {
+                    "operationId": "saveStateFile",
+                    "summary": "Save one runtime state file",
+                    "description": "Saves one allowed JSON state file to persistent runtime storage. Use after significant scene turns to update knowledge_state, scene_history, current_state, relationships or inventory_state. Do not save hidden lore as character knowledge unless learned in scene.",
+                    "requestBody": {
+                        "required": True,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": ["filename", "content"],
+                                    "properties": {
+                                        "filename": {
+                                            "type": "string",
+                                            "enum": STATE_FILES,
+                                            "description": "Allowed runtime state filename."
+                                        },
+                                        "content": {
+                                            "description": "Full JSON content for the selected state file. scene_history.json must be an array; other state files must be objects."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "responses": {"200": {"description": "State file saved"}}
                 }
             }
         }
