@@ -80,7 +80,8 @@ def build_hard_rules(scene_id: str) -> list[str]:
         "Рэй Картер и Райден Стэрлинг — разные персонажи. Рэй — старший командир Восточной базы; Райден — командир 7 отряда Восточного сектора.",
         "Основное имя Райдена — Райден. Не использовать Рэй, Рай или Рэйден как имя/алиас Райдена.",
         "Не утверждать, что Райден знает или не знает Рэя, без проверки relationships/card. Корректно для start_scene: Райден не знает Ирэя и не ехал к дому Джуна по заранее полученному поручению.",
-        "Записка 'Рэй / Восточный сектор' ведёт к Рэю Картеру, а не к Райдену как алиасу."
+        "Записка 'Рэй / Восточный сектор' ведёт к Рэю Картеру, а не к Райдену как алиасу.",
+        "Перед пропуском времени, вводом рейда, Эхо, Хару, Юны, Нацу, Кая, Широ, Алекс или сценой с Рэем проверять data/calendar/story_calendar.json."
     ]
 
     if scene_id != "start_scene":
@@ -145,8 +146,9 @@ def turn_context(payload: TurnContextRequest) -> dict[str, Any]:
         "story_flags": current_state.get("story_flags", {}),
         "primary_file": scene_file,
         "format_file": "data/gpt/scene_format.md",
+        "calendar_file": "data/calendar/story_calendar.json",
         "hard_rules": build_hard_rules(scene_id),
-        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim. For later scene turns, also call getFileContent with path=format_file and keep that format. Always obey hard_rules.",
+        "next_step": "Call getFileContent with path=primary_file. For start_scene first output, use json_field=text and print it verbatim. For later scene turns, also call getFileContent with path=format_file and keep that format. Use calendar_file before time skips, required events, raids, Echo, medblock or character availability. Always obey hard_rules.",
     }
 
 
@@ -161,7 +163,7 @@ def actions_openapi() -> dict[str, Any]:
                 "post": {
                     "operationId": "getTurnContext",
                     "summary": "Get minimal current scene pointer",
-                    "description": "Returns minimal state, primary scene file, format file and small hard_rules. Then call getFileContent for needed files.",
+                    "description": "Returns minimal state, primary scene file, format file, calendar file and small hard_rules. Then call getFileContent for needed files.",
                     "requestBody": {
                         "required": True,
                         "content": {
@@ -181,7 +183,7 @@ def actions_openapi() -> dict[str, Any]:
                 "post": {
                     "operationId": "getFileContent",
                     "summary": "Get one repository file or one JSON field",
-                    "description": "Returns only the requested file content. Use json_field=text for start_scene text. Use path=data/gpt/scene_format.md for mandatory scene format.",
+                    "description": "Returns only the requested file content. Use json_field=text for start_scene text. Use path=data/gpt/scene_format.md for mandatory scene format. Use path=data/calendar/story_calendar.json for event timing.",
                     "requestBody": {
                         "required": True,
                         "content": {
@@ -190,7 +192,7 @@ def actions_openapi() -> dict[str, Any]:
                                     "type": "object",
                                     "required": ["path"],
                                     "properties": {
-                                        "path": {"type": "string", "description": "Repository file path, for example data/scenes/start_scene.json or data/gpt/scene_format.md"},
+                                        "path": {"type": "string", "description": "Repository file path, for example data/scenes/start_scene.json, data/gpt/scene_format.md or data/calendar/story_calendar.json"},
                                         "json_field": {"type": "string", "description": "Optional JSON field to return, for example text"}
                                     }
                                 }
