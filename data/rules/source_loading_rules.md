@@ -38,6 +38,7 @@ data/rules/player_control_rules.md
 data/rules/relationship_state_rules.md
 data/rules/character_rotation_rules.md
 data/rules/npc_creation_rules.md
+data/state/memory_update_rules.md
 data/canon/canon_index.md
 data/calendar/story_calendar.json
 data/calendar/character_availability.json
@@ -49,6 +50,25 @@ data/state/scene_history.json
 ```
 
 Если state-файла нет, движок должен создать пустой шаблон, а не заменять его догадками.
+
+---
+
+## Knowledge / memory update rules
+
+`data/state/memory_update_rules.md` обязателен, потому что он объясняет, как фиксировать знания персонажей после сцены.
+
+Персонажи не получают знания автоматически.
+
+Если персонаж что-то узнал, увидел, услышал, прочитал, понял, неправильно понял или наоборот не мог знать — это должно быть сохранено в:
+
+```text
+data/state/knowledge_state.json
+data/state/scene_history.json
+```
+
+После раскрытия имени надо фиксировать `names_revealed_to_akira` и `speaker_labels`, чтобы ИИ не возвращался к старым дескрипторам вроде `женский голос снизу` после того, как имя уже известно.
+
+Hidden lore нельзя записывать в `knows`, если персонаж не узнал это сценой.
 
 ---
 
@@ -152,6 +172,7 @@ data/scenes/{current_scene_id}.json
 data/state/current_state.json
 data/state/scene_history.json
 data/calendar/story_calendar.json
+data/state/memory_update_rules.md
 ```
 
 Если scene-файл содержит `required_files`, `required_canon_files`, `required_character_ids`, `scene_tags` — учитывать их.
@@ -262,6 +283,7 @@ data/canon/inner_subtext_style.md
 ```text
 data/rules/start_scene_continuation_rules.md
 data/calendar/story_calendar.json
+data/state/memory_update_rules.md
 ```
 
 ### Timeline / Echo
@@ -330,6 +352,7 @@ data/rules/npc_creation_rules.md
 data/calendar/character_availability.json
 data/calendar/story_calendar.json
 data/characters/character_id_index.json
+data/state/memory_update_rules.md
 ```
 
 Новый NPC допустим только если нет канонного или уже закреплённого персонажа для этой роли.
